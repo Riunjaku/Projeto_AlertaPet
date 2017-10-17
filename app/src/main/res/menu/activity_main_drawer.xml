@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_account_circle"
+            android:title="Perfil" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_action_map"
+            android:title="Mapa" />
+        <item
+            android:id="@+id/nav_lista_animais"
+            android:icon="@drawable/ic_list"
+            android:title="Lista de animais" />
+        <item
+            android:id="@+id/nav_registrar_animais"
+            android:icon="@drawable/ic_action_add"
+            android:title="Registrar animais" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_chat"
+            android:title="Bate papo" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_action_gear"
+            android:title="Configuração" />
+        <item
+            android:id="@+id/nav_logoff"
+            android:icon="@drawable/ic_power_settings_new"
+            android:title="Deslogar" />
+    </group>
+
+
+</menu>
