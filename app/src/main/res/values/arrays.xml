@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="especies">
+        <item>@string/especie1</item>
+        <item>@string/especie2</item>
+        <item>@string/especie3</item>
+        <item>@string/especie4</item>
+        <item>@string/especie5</item>
+    </string-array>
+</resources>

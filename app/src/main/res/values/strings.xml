@@ -2,7 +2,29 @@
     <string name="app_name">AlertaPet</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Labels-->
+    <string name="labelVermifugado">O Animal foi vermifugado?</string>
+    <string name="labelCastrado">O Animal foi castrado?</string>
+    <string name="labelGenero">Qual o sexo do Animal?</string>
+    <string name="labelEspecie">Qual a espécie do Animal?</string>
+    <string name="labelAdicionais">Informações adicionais</string>
+    <string name="spinnerEspecieLabel">Espécie</string>
+    <string name="radio_f">Fêmea</string>
+    <string name="radio_m">Macho</string>
+    <string name="radio_sim">Sim</string>
+    <string name="radio_nao">Não</string>
+
+    <!--Descrição de conteudo-->
+    <string name="contentImageDescription">upload da imagem do animal</string>
+
+
+    <!--opcoes do spinner especies-->
+    <string name="especie1">Cachorros</string>
+    <string name="especie2">Gatos</string>
+    <string name="especie3">Passaros</string>
+    <string name="especie4">Peixes</string>
+    <string name="especie5">Roedores</string>
 </resources>
