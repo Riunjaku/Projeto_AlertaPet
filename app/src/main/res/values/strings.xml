@@ -27,4 +27,7 @@
     <string name="especie3">Passaros</string>
     <string name="especie4">Peixes</string>
     <string name="especie5">Roedores</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

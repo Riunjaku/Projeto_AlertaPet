@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.aniharu.alertapet.Classes.Marcadores;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -20,9 +21,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -33,12 +36,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         View.OnClickListener
 {
 
+        //Variaveis globais
         GoogleMap mGoogleMap;
         MapView mMapView;
         GoogleApiClient mGoogleApiClient;
         private static final String TAG = "fudeu";
-        private double longitude;
-        private double latitude;
         SupportMapFragment mapFragment;
 
 
@@ -66,7 +68,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            mMapView = (MapView) view.findViewById(R.id.map);
+            mMapView = view.findViewById(R.id.map);
             mMapView.onCreate(savedInstanceState);
             mMapView.onResume();
             mMapView.getMapAsync(this);
@@ -118,6 +120,74 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
 
         @Override
+        public boolean onMarkerClick(Marker marker) {
+            Toast.makeText(getActivity(), "onMarkerClick", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+
+            this.mGoogleMap = googleMap;
+
+            //Configuração do mapa
+            mGoogleMap.getUiSettings().setZoomControlsEnabled(false);
+            mGoogleMap.setBuildingsEnabled(false);
+            mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
+            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+
+            //Restrição do mapa
+            LatLng RIODEJANEIRO = new LatLng(-22.927350, -43.422644);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(RIODEJANEIRO, 12));
+            LatLngBounds RIODEJANEIROBOUNDS = new LatLngBounds(
+                    new LatLng(-23.056930, -43.790686), new LatLng(-22.745730, -43.102667));
+            mGoogleMap.setLatLngBoundsForCameraTarget(RIODEJANEIROBOUNDS);
+
+            //Customizações
+            CustomInfoWindow adapter = new CustomInfoWindow(MainFragment.this);
+            mGoogleMap.setInfoWindowAdapter(adapter);
+
+            //Marcador de teste
+            //Receber o JSON do firebase com todos os marcadores, transformar num array de marcadores
+            //e colocar o array no lugar do X
+            Marcadores marcadores = new Marcadores();
+            marcadores.setDescricao("teste dos cxx");
+            marcadores.setImagem("http://placehold.it/120x120&text=image1");
+            marcadores.setLat(-22.87396);
+            marcadores.setLng(-43.4313797);
+
+            Marcadores marcadores2 = new Marcadores();
+            marcadores2.setDescricao("teste dos marcadores");
+            marcadores2.setImagem("http://placehold.it/120x120&text=image4");
+            marcadores2.setLat(-22.873994);
+            marcadores2.setLng(-43.4632977);
+
+            Marcadores[] x = {marcadores, marcadores2};
+            adcionarMarcadores(x);
+
+        }
+
+        public void adcionarMarcadores(Marcadores[] marcadores)
+        {
+
+            for (Marcadores marker:marcadores) {
+
+                MarkerOptions markerOpt = new MarkerOptions();
+                markerOpt.position(new LatLng(marker.getLat(), marker.getLng()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker))
+                        .snippet(marker.descricao)
+                        .title(marker.imagem);
+
+                mGoogleMap.addMarker(markerOpt);
+
+            }
+
+        }
+
+
+        //Metodos nunca usados
+        @Override
         public void onClick(View view) {
             Log.v(TAG, "view click event");
         }
@@ -136,32 +206,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
             Log.d("Dominando", "onDisconnected");
-        }
-
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            Toast.makeText(getActivity(), "onMarkerClick", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            this.mGoogleMap = googleMap;
-            //desativa os controles do mapa
-            mGoogleMap.getUiSettings().setZoomControlsEnabled(false);
-            mGoogleMap.setBuildingsEnabled(false);
-            mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
-            //seta o rio de janeiro como ponto inicial
-            LatLng RIODEJANEIRO = new LatLng(-22.927350, -43.422644);
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(RIODEJANEIRO, 12));
-            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-            //seta as bordas do rio de janeiro
-            LatLngBounds RIODEJANEIROBOUNDS = new LatLngBounds(
-                    new LatLng(-23.056930, -43.790686), new LatLng(-22.745730, -43.102667));
-            mGoogleMap.setLatLngBoundsForCameraTarget(RIODEJANEIROBOUNDS);
-
-
         }
 
         @Override
