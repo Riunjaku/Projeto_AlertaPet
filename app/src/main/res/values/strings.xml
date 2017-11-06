@@ -16,6 +16,20 @@
     <string name="radio_m">Macho</string>
     <string name="radio_sim">Sim</string>
     <string name="radio_nao">Não</string>
+    <string name="entrar">entrar</string>
+    <string name="login_button_label">Logar</string>
+    <string name="senha_placeholder">Senha</string>
+    <string name="email_placeholder">Email</string>
+    <string name="dialog_login_title">Login</string>
+    <string name="register_button_label">Criar uma conta nova?</string>
+    <string name="login_msg_sucesso">Logado com sucesso</string>
+    <string name="campos_vazio_login">Preencha todos os campos</string>
+    <string name="checkbox_register_text">Eu li e aceito os termos de uso</string>
+    <string name="confirmar_senha_placeholder">Confirme sua senha</string>
+    <string name="dialog_register_title">Registrar</string>
+    <string name="voltar_button_label">Voltar</string>
+    <string name="registrar_button_label">Registrar</string>
+    <string name="registro_sucesso_msg">registrado com sucesso</string>
 
     <!--Descrição de conteudo-->
     <string name="contentImageDescription">upload da imagem do animal</string>
