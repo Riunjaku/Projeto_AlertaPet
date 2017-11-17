@@ -8,7 +8,7 @@
     <!--Labels-->
     <string name="labelVermifugado">O Animal foi vermifugado?</string>
     <string name="labelCastrado">O Animal foi castrado?</string>
-    <string name="labelGenero">Qual o sexo do Animal?</string>
+    <string name="labelGenero">Qual o genero do Animal?</string>
     <string name="labelEspecie">Qual a espécie do Animal?</string>
     <string name="labelAdicionais">Informações adicionais</string>
     <string name="spinnerEspecieLabel">Espécie</string>

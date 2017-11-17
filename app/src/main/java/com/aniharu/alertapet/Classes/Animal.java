@@ -1,13 +1,14 @@
 package com.aniharu.alertapet.Classes;
 
+import java.io.Serializable;
+
 /**
  * Created by riunjaku on 14/11/2017.
  */
 
-public class Animal {
+public class Animal implements Serializable {
 
-    public String infoAdicional, especie, genero;
-    public boolean castrado, vermifugado;
+    public String infoAdicional, especie, genero, castrado, vermifugado;
     public Byte[] imagem;
 
     public void setInfoAdicional(String infoAdicional) {
@@ -31,17 +32,17 @@ public class Animal {
         return genero;
     }
 
-    public void setCastrado(boolean castrado) {
+    public void setCastrado(String castrado) {
         this.castrado = castrado;
     }
-    public Boolean getCastrado() {
+    public String getCastrado() {
         return castrado;
     }
 
-    public void setVermifugado(boolean vermifugado) {
+    public void setVermifugado(String vermifugado) {
         this.vermifugado = vermifugado;
     }
-    public Boolean getVermifugado() {
+    public String getVermifugado() {
         return vermifugado;
     }
 

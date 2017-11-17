@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.aniharu.alertapet.RegistrarAnimaisFragment">
 
 
     <ScrollView
@@ -7,25 +12,26 @@
         android:id="@+id/ScrollView01"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
         android:scrollbars="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/fragAnimal">
 
             <!--Put form controls here-->
             <ImageView
 
+                android:id="@+id/imageview_default_picture"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/imageview_default_picture"
+                android:layout_marginBottom="16dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/contentImageDescription"
+                android:cropToPadding="false"
                 android:padding="32dp"
-                android:src="@drawable/ic_up_image"
-                android:layout_marginBottom="16dp"
-                />
+                android:src="@drawable/ic_up_image" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,6 +64,7 @@
                     android:id="@+id/radiobutton_vermifugado_nao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/radio_nao"/>
 
 
@@ -94,6 +101,7 @@
                     android:id="@+id/radiobutton_castrado_nao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/radio_nao"/>
 
 
@@ -130,6 +138,7 @@
                     android:id="@+id/radiobutton_genero_masc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/radio_m"/>
 
 
@@ -202,3 +211,4 @@
         </LinearLayout>
     </ScrollView>
 
+</FrameLayout>
