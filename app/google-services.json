@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1054561212537",
+    "firebase_url": "https://alertapet-1505487129772.firebaseio.com",
+    "project_id": "alertapet-1505487129772",
+    "storage_bucket": "alertapet-1505487129772.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054561212537:android:56bcadc36c8bd78d",
+        "android_client_info": {
+          "package_name": "com.aniharu.alertapet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054561212537-q38gc0vas8i8d8rtlujc6au7k0v8e25c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_AXnjrkYgUaLD6jQhDoxHPZjgy1Jq9_Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

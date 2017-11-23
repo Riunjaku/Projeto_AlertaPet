@@ -1,5 +1,6 @@
 package com.aniharu.alertapet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.aniharu.alertapet.Classes.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -21,8 +24,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Pega o usuario
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        User user = (User) bundle.get("userLogged");
+
         //Coloca o fragmento inicial
-        MainFragment fragment = new MainFragment();
+        PerfilFragment fragment = new PerfilFragment();
+        //Coloca o usuario logado no perfil
+        bundle.putSerializable("LoggedUser",user);
+        fragment.setArguments(bundle);
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
