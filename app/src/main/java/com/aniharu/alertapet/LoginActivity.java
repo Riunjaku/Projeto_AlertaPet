@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                             String userId = mDatabase.push().getKey();
 
                             // criando um objeto de usuário
-                            User user = new User("", vEmail, vPassword, "", "", "");
+                            User user = new User(userId,"", vEmail, vPassword, "", "", "");
 
                             // salvando o usuário no nó ‘users’ usando o id do usuário
                             mDatabase.child(userId).setValue(user, new DatabaseReference.CompletionListener() {

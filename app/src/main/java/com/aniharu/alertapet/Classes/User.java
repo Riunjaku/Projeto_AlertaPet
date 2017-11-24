@@ -11,6 +11,7 @@ import java.io.Serializable;
 @IgnoreExtraProperties
 public class User implements Serializable {
 
+    public String id;
     public String name;
     public String email;
     public String password;
@@ -23,7 +24,8 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String name, String email, String password, String dt_nascimento, String telefone, String imageUrl) {
+    public User(String id, String name, String email, String password, String dt_nascimento, String telefone, String imageUrl) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -31,4 +33,6 @@ public class User implements Serializable {
         this.telefone = telefone;
         this.imageUrl = imageUrl;
     }
+
+
 }

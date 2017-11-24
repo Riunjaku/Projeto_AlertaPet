@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +28,14 @@ public class MainActivity extends AppCompatActivity
         //Pega o usuario
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        User user = (User) bundle.get("userLogged");
+        user = (User) bundle.get("userLogged");
 
         //Coloca o fragmento inicial
         PerfilFragment fragment = new PerfilFragment();
         //Coloca o usuario logado no perfil
-        bundle.putSerializable("LoggedUser",user);
+        bundle.putSerializable("userLogged",user);
         fragment.setArguments(bundle);
+
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -65,6 +67,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_perfil) {
 
             PerfilFragment fragment = new PerfilFragment();
+
+            //Passando usuario
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+            fragment.setArguments(bundle);
+
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -74,6 +84,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_map) {
 
             MainFragment fragment = new MainFragment();
+
+            //Passando usuario
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+            fragment.setArguments(bundle);
+
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -82,6 +100,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_lista_animais) {
 
             ListaAnimaisFragment fragment = new ListaAnimaisFragment();
+
+            //Passando usuario
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+            fragment.setArguments(bundle);
+
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -90,6 +116,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_registrar_animais) {
 
             RegistrarAnimaisFragment fragment = new RegistrarAnimaisFragment();
+
+            //Passando usuario
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+            fragment.setArguments(bundle);
+
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -98,6 +132,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_chat) {
 
             BatePapoFragment fragment = new BatePapoFragment();
+
+            //Passando usuario
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+            fragment.setArguments(bundle);
+
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -106,6 +148,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_config) {
 
             ConfigFragment fragment = new ConfigFragment();
+
+            //Passando usuario
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+            fragment.setArguments(bundle);
+
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
