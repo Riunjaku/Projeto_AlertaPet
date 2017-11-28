@@ -8,8 +8,21 @@ import java.io.Serializable;
 
 public class Animal implements Serializable {
 
-    public String infoAdicional, especie, genero, castrado, vermifugado;
-    public Byte[] imagem;
+    public String id, infoAdicional, especie, genero, castrado, vermifugado;
+   // public Byte[] imagem;
+
+    public Animal() {
+    }
+
+    public Animal(String id, String infoAdicional, String especie, String genero, String castrado, String vermifugado) {
+        this.id = id;
+        this.infoAdicional = infoAdicional;
+        this.especie = especie;
+        this.genero = genero;
+        this.castrado = castrado;
+        this.vermifugado = vermifugado;
+        //this.imageUrl = imageUrl;
+    }
 
     public void setInfoAdicional(String infoAdicional) {
         this.infoAdicional = infoAdicional;
@@ -46,11 +59,11 @@ public class Animal implements Serializable {
         return vermifugado;
     }
 
-    public Byte[] getImagem() {
-        return imagem;
-    }
-    public void setImagem(Byte[] imagem) {
-        this.imagem = imagem;
-    }
+    //public Byte[] getImagem() {
+     //   return imagem;
+   // }
+   // public void setImagem(Byte[] imagem) {
+     //   this.imagem = imagem;
+   // }
 
 }

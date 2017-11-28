@@ -13,8 +13,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.aniharu.alertapet.Classes.Animal;
+import com.aniharu.alertapet.Classes.User;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
@@ -77,10 +82,30 @@ public class RegistrarAnimaisFragment extends Fragment {
                 //valorImage = mImageView.
 
                 //salvar o resultado desse metodo no banco de dados e abrir o preview desse animal
-                criarAnimal();
-                previewAnimal(criarAnimal());
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
+                final String petId = mDatabase.push().getKey();
 
-                Log.i("123", especieSelecionado);
+                // criando um objeto de animal para salvar no banco
+                Animal animal = new Animal(petId,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado);
+
+                // salvando o animal no nó ‘pets’ usando o id do usuário
+                mDatabase.child(petId).setValue(animal, new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError error, DatabaseReference ref) {
+                        if (error != null) {
+                            Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                            Toast.makeText(getContext(),
+                                    "Um erro inesperado ocorreu, por favor tente novamente, ou entre em contato com o suporte",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.i("sucesso","Data saved successfully. ");
+                            Toast.makeText(getContext(), "Cadastrado com sucesso",
+                                    Toast.LENGTH_LONG).show();
+                            previewAnimal(petId);
+
+                        }
+                    }
+                });
+
             }
         });
 
@@ -94,7 +119,6 @@ public class RegistrarAnimaisFragment extends Fragment {
                 if (checkedId == R.id.radiobutton_vermifugado_nao){
                     valorVermifugado = mRadioButtonVermifugadoN.getText().toString();
                 }
-                Log.i("valorVermifugado", valorVermifugado);
             }
         });
 
@@ -108,7 +132,6 @@ public class RegistrarAnimaisFragment extends Fragment {
                 if (checkedId == R.id.radiobutton_castrado_nao){
                     valorCastrado = mRadioButtonCastradoN .getText().toString();
                 }
-                Log.i("valorCastrado", valorCastrado);
             }
         });
 
@@ -122,30 +145,15 @@ public class RegistrarAnimaisFragment extends Fragment {
                 if (checkedId == R.id.radiobutton_genero_masc){
                     valorGenero = mRadioButtonGeneroM .getText().toString();
                 }
-                Log.i("valorGenero", valorGenero);
             }
         });
     }
 
-    public Animal criarAnimal()
-    {
-        Animal animal = new Animal();
-
-        animal.vermifugado = valorVermifugado;
-        animal.castrado = valorCastrado;
-        animal.especie = especieSelecionado;
-        animal.genero = valorGenero;
-        animal.infoAdicional = valorInfoAdicional;
-        animal.imagem = valorImage;
-
-        return animal;
-    }
-
-    public void previewAnimal(Animal animal)
+    public void previewAnimal(String petId)
     {
         Bundle args = new Bundle();
-        args.putSerializable("Animal", animal);
-        ConfigFragment fragment = new ConfigFragment();
+        args.putSerializable("id", petId);
+        PreviewAnimalFragment fragment = new PreviewAnimalFragment();
         fragment.setArguments(args);
         getFragmentManager()
                 .beginTransaction()

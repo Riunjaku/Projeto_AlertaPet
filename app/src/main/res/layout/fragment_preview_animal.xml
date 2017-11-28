@@ -31,35 +31,35 @@
         />
 
     <TextView
-        android:id="@+id/editText"
+        android:id="@+id/edtVermifugado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="Animal vermifugado" />
 
     <TextView
-        android:id="@+id/editText2"
+        android:id="@+id/edtCastrado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="Animal nao foi castrado" />
 
     <TextView
-        android:id="@+id/editText3"
+        android:id="@+id/edtGenero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="Femea" />
 
     <TextView
-        android:id="@+id/editText4"
+        android:id="@+id/edtEspecie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="Passaro" />
 
         <TextView
-            android:id="@+id/editText5"
+            android:id="@+id/edtInfoAdicional"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
