@@ -45,8 +45,9 @@
                     android:layout_marginRight="32dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="50dp"
+                    android:text="Nome:"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Nome:" />
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/editNome"
@@ -74,8 +75,9 @@
             android:layout_marginRight="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="10dp"
+            android:text="Data de Nascimento:"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Data de Nascimento:" />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/editDataNascimento"
@@ -97,8 +99,9 @@
             android:layout_marginRight="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="10dp"
+            android:text="Celular"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Celular" />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/editCelular"
@@ -120,8 +123,9 @@
             android:layout_marginRight="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="10dp"
+            android:text="Email"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Email" />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/editEmail"
