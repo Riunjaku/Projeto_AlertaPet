@@ -88,7 +88,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginStart="32dp"
             android:enabled="false"
-            android:inputType="textPersonName|date" />
+            android:inputType="date" />
 
         <TextView
             android:id="@+id/textView6"
@@ -112,7 +112,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginStart="32dp"
             android:enabled="false"
-            android:inputType="textPersonName|phone" />
+            android:inputType="phone" />
 
         <TextView
             android:id="@+id/textView7"
