@@ -71,6 +71,7 @@ public class PerfilFragment extends Fragment {
         final EditText mEmail = (EditText) view.findViewById(R.id.editEmail);
         final Button mBtnConfirmar = (Button) view.findViewById(R.id.btnConfirmar);
         final Button mBtnEditar = (Button) view.findViewById(R.id.btnEditar);
+        final Button mBtnFoto = (Button) view.findViewById(R.id.btnFoto);
 
         //inserindo os dados na tela
         // mImageView.setImageURI(Uri.parse(user.imageUrl));
@@ -90,7 +91,9 @@ public class PerfilFragment extends Fragment {
                 mCelular.setEnabled(true);
                 mEmail.setEnabled(true);
                 mBtnConfirmar.setVisibility(View.VISIBLE);
+                mBtnFoto.setVisibility(View.VISIBLE);
                 mBtnEditar.setVisibility(View.GONE);
+
 
             }
         });
@@ -105,6 +108,7 @@ public class PerfilFragment extends Fragment {
                 mCelular.setEnabled(false);
                 mEmail.setEnabled(false);
                 mBtnConfirmar.setVisibility(View.GONE);
+                mBtnFoto.setVisibility(View.GONE);
                 mBtnEditar.setVisibility(View.VISIBLE);
 
                 //salvar imagem(Eu acho tem que testar)
