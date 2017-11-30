@@ -1,6 +1,7 @@
 package com.aniharu.alertapet;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class ConfigFragment extends Fragment {
 
         Button mSobre = view.findViewById(R.id.button2);
         Button mTermos = view.findViewById(R.id.button3);
+        Button mPrivacidade =view.findViewById(R.id.button4);
 
 
         mSobre.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +63,21 @@ public class ConfigFragment extends Fragment {
 
             }
         });
+
+        mPrivacidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ConfigPrivacidadeFragment fragment = new ConfigPrivacidadeFragment();
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment,"Privacidade")
+                        .commit();
+
+            }
+        });
+
     }
 
 }
