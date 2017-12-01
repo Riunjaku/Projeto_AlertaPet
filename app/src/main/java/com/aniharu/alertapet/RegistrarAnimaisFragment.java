@@ -1,7 +1,13 @@
 package com.aniharu.alertapet;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +22,18 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.aniharu.alertapet.Classes.Animal;
-import com.aniharu.alertapet.Classes.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -29,12 +43,17 @@ public class RegistrarAnimaisFragment extends Fragment {
 
 
 
+    final int GALLERY = 1;
+    final int CAMERA =3;
     String valorVermifugado;
     String valorCastrado;
     String especieSelecionado;
     String valorGenero;
     String valorInfoAdicional;
-    Byte[] valorImage;
+    int PROFILE_PIC_COUNT = 0;
+    ImageView mImageView;
+    String downloadUrl;
+    Animal animal;
 
     public RegistrarAnimaisFragment() {
         // Required empty public constructor
@@ -52,42 +71,80 @@ public class RegistrarAnimaisFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ImageView mImageView = (ImageView) view.findViewById(R.id.imageview_default_picture);
-
-        final Spinner mSpinner = (Spinner) view.findViewById(R.id.SpinnerEspecie);
-
-        final EditText mInfoAdicional = (EditText) view.findViewById(R.id.infoAdicionais);
+        mImageView = view.findViewById(R.id.imageview_default_picture);
+        final Spinner mSpinner = view.findViewById(R.id.SpinnerEspecie);
+        final EditText mInfoAdicional = view.findViewById(R.id.infoAdicionais);
 
         //RadioGroup vermifugado
-        final RadioGroup mRadiogroup_vermifugado = (RadioGroup) view.findViewById(R.id.radiogroup_vermifugado);
-        final RadioButton mRadioButtonVermifugadoS = (RadioButton) view.findViewById(R.id.radiobutton_vermifugado_sim);
-        final RadioButton mRadioButtonVermifugadoN = (RadioButton) view.findViewById(R.id.radiobutton_vermifugado_nao);
+        final RadioGroup mRadiogroup_vermifugado = view.findViewById(R.id.radiogroup_vermifugado);
+        final RadioButton mRadioButtonVermifugadoS = view.findViewById(R.id.radiobutton_vermifugado_sim);
+        final RadioButton mRadioButtonVermifugadoN = view.findViewById(R.id.radiobutton_vermifugado_nao);
 
         //RadioGroup castrado
-        final RadioGroup mRadioGroup_castrado = (RadioGroup) view.findViewById(R.id.radiogroup_castrado);
-        final RadioButton mRadioButtonCastradoS = (RadioButton) view.findViewById(R.id.radiobutton_castrado_sim);
-        final RadioButton mRadioButtonCastradoN = (RadioButton) view.findViewById(R.id.radiobutton_castrado_nao);
+        final RadioGroup mRadioGroup_castrado = view.findViewById(R.id.radiogroup_castrado);
+        final RadioButton mRadioButtonCastradoS = view.findViewById(R.id.radiobutton_castrado_sim);
+        final RadioButton mRadioButtonCastradoN = view.findViewById(R.id.radiobutton_castrado_nao);
 
         //RadioGroup genero
-        final RadioGroup mRadioGroup_genero = (RadioGroup) view.findViewById(R.id.radiogroup_genero);
-        final RadioButton mRadioButtonGeneroF = (RadioButton) view.findViewById(R.id.radiobutton_genero_fem);
-        final RadioButton mRadioButtonGeneroM = (RadioButton) view.findViewById(R.id.radiobutton_genero_masc);
+        final RadioGroup mRadioGroup_genero = view.findViewById(R.id.radiogroup_genero);
+        final RadioButton mRadioButtonGeneroF = view.findViewById(R.id.radiobutton_genero_fem);
+        final RadioButton mRadioButtonGeneroM = view.findViewById(R.id.radiobutton_genero_masc);
 
-        Button mCadastrar = (Button) view.findViewById(R.id.btnCadastrar);
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] items = {"Tirar foto", "Escolher da galeria", "Cancelar"};
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+                builder.setTitle("Adicionar foto!");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        if (items[item].equals("Tirar foto")) {
+                            PROFILE_PIC_COUNT = 1;
+                            Intent takePictureIntent = new
+                                    Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (takePictureIntent.resolveActivity(getActivity().getPackageManager())!= null){
+                                startActivityForResult(takePictureIntent, CAMERA);
+                            }
+                        } else if (items[item].equals("Escolher da galeria")) {
+                            PROFILE_PIC_COUNT = 1;
+                            Intent galleryPictureIntent = new
+                                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            galleryPictureIntent.setType("image/*");
+                            galleryPictureIntent.setAction(Intent.ACTION_GET_CONTENT);
+                            if(galleryPictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                startActivityForResult(galleryPictureIntent, GALLERY);
+                            }
+                        } else if (items[item].equals("Cancelar")) {
+                            PROFILE_PIC_COUNT = 0;
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        Button mCadastrar = view.findViewById(R.id.btnCadastrar);
         mCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 especieSelecionado = mSpinner.getSelectedItem().toString();
                 valorInfoAdicional = mInfoAdicional.getText().toString();
-                //valorImage = mImageView.
 
+                if(valorVermifugado == null || valorCastrado == null || valorGenero == null) {
+                    Toast.makeText(getContext(), "Preencha todos os campos",
+                            Toast.LENGTH_LONG).show();
+                }
+                else
+                {
                 //salvar o resultado desse metodo no banco de dados e abrir o preview desse animal
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
                 final String petId = mDatabase.push().getKey();
 
                 // criando um objeto de animal para salvar no banco
-                Animal animal = new Animal(petId,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado);
-
+                animal = new Animal(petId,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado, downloadUrl);
                 // salvando o animal no nó ‘pets’ usando o id do usuário
                 mDatabase.child(petId).setValue(animal, new DatabaseReference.CompletionListener() {
                     public void onComplete(DatabaseError error, DatabaseReference ref) {
@@ -100,11 +157,13 @@ public class RegistrarAnimaisFragment extends Fragment {
                             Log.i("sucesso","Data saved successfully. ");
                             Toast.makeText(getContext(), "Cadastrado com sucesso",
                                     Toast.LENGTH_LONG).show();
+                            salvandoProfilePicture();
                             previewAnimal(petId);
 
                         }
                     }
                 });
+                }
 
             }
         });
@@ -161,6 +220,69 @@ public class RegistrarAnimaisFragment extends Fragment {
                 .addToBackStack("RegistrarAnimal").commit();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap;
+            if (extras != null) {
+                imageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(imageBitmap);
+            }
+        }
+        else if(requestCode == GALLERY && resultCode == RESULT_OK)
+        {
+            Uri imageUri= data.getData();
+            mImageView.setImageURI(imageUri);
+        }
+    }
 
+    public void salvandoProfilePicture()
+    {
+        //referencias
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference profileRef = storageRef.child("pets/"+animal.id+"/petPicture.jpg");
+
+        //pegando a imagem
+        mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache();
+        Bitmap bitmap = mImageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = profileRef.putBytes(data);
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                if(taskSnapshot.getDownloadUrl() != null) {
+                    downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Falha em conectar com o servidor",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+        mDatabase.child(animal.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error != null) {
+                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                } else {
+                    Log.i("sucesso","Data saved successfully. ");
+                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
 }

@@ -3,14 +3,14 @@ package com.aniharu.alertapet;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aniharu.alertapet.Classes.Animal;
-import com.aniharu.alertapet.Classes.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -27,11 +28,10 @@ public class PreviewAnimalFragment extends Fragment {
 
     String petId;
     Animal animal;
-    TextView mVermifugado;
-    TextView mCastrado;
     TextView mGenero;
     TextView mEspecie;
     TextView mInfoAdicional;
+    ImageView mImageView;
 
     public PreviewAnimalFragment() {
         // Required empty public constructor
@@ -52,13 +52,16 @@ public class PreviewAnimalFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mVermifugado = view.findViewById(R.id.edtVermifugado);
-        mCastrado = view.findViewById(R.id.edtCastrado);
+        mImageView = view.findViewById(R.id.imageview_default_picture);
         mGenero = view.findViewById(R.id.edtGenero);
         mEspecie = view.findViewById(R.id.edtEspecie);
         mInfoAdicional = view.findViewById(R.id.edtInfoAdicional);
 
+        final CheckBox mCastradoSim = view.findViewById(R.id.castradoSim);
+        final CheckBox mCastradoNao = view.findViewById(R.id.castradoNao);
 
+        final CheckBox mVermifugadoSim = view.findViewById(R.id.vermifugadoSim);
+        final CheckBox mVermifugadoNao = view.findViewById(R.id.vermifugadoNao);
 
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -74,12 +77,36 @@ public class PreviewAnimalFragment extends Fragment {
 
                                 animal = dataSnapshot.getValue(Animal.class);
 
-                                mVermifugado.setText(animal.vermifugado);
-                                mCastrado.setText(animal.castrado);
+                                Picasso.with(getContext())
+                                        .load(animal.imageUrl)
+                                        .placeholder(R.drawable.placeholder)
+                                        .error(R.mipmap.ic_launcher)
+                                        .into(mImageView);
                                 mGenero.setText(animal.genero);
                                 mEspecie.setText(animal.especie);
                                 mInfoAdicional.setText(animal.infoAdicional);
 
+                                if(animal.vermifugado.equals("Sim"))
+                                {
+                                    mVermifugadoSim.setChecked(true);
+                                    mVermifugadoNao.setChecked(false);
+                                }
+                                else
+                                {
+                                    mVermifugadoSim.setChecked(false);
+                                    mVermifugadoNao.setChecked(true);
+                                }
+
+                                if(animal.castrado.equals("Sim"))
+                                {
+                                    mCastradoSim.setChecked(true);
+                                    mCastradoNao.setChecked(false);
+                                }
+                                else
+                                {
+                                    mCastradoSim.setChecked(false);
+                                    mCastradoNao.setChecked(true);
+                                }
                         }
 
                         @Override

@@ -1,5 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,60 +10,173 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:id="@+id/fragAnimal">
-
-    <!--Put form controls here-->
-    <ImageView
-
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/imageview_default_picture"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/contentImageDescription"
-        android:padding="32dp"
-        android:src="@drawable/ic_up_image"
-        android:layout_marginBottom="16dp"
-        />
-
-    <TextView
-        android:id="@+id/edtVermifugado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Animal vermifugado" />
-
-    <TextView
-        android:id="@+id/edtCastrado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Animal nao foi castrado" />
-
-    <TextView
-        android:id="@+id/edtGenero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Femea" />
-
-    <TextView
-        android:id="@+id/edtEspecie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Passaro" />
-
-        <TextView
-            android:id="@+id/edtInfoAdicional"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:text="informacoes adicionais" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <!--Put form controls here-->
+            <ImageView
+
+                android:id="@+id/imageview_default_picture"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/contentImageDescription"
+                android:padding="32dp"
+                android:src="@drawable/ic_up_image" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/especieLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/especieLabel"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <TextView
+                    android:id="@+id/generoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="102dp"
+                    android:layout_marginRight="102dp"
+                    android:text="@string/generoLabel"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/edtEspecie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/especieLabel"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignStart="@+id/especieLabel"
+                    android:layout_marginBottom="11dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <TextView
+                    android:id="@+id/edtGenero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/edtEspecie"
+                    android:layout_alignBottom="@+id/edtEspecie"
+                    android:layout_alignLeft="@+id/generoLabel"
+                    android:layout_alignStart="@+id/generoLabel"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/castradoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/castradoLabel"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <TextView
+                    android:id="@+id/vermifugadoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/castradoLabel"
+                    android:layout_alignStart="@+id/castradoLabel"
+                    android:layout_below="@+id/castradoLabel"
+                    android:layout_marginTop="17dp"
+                    android:text="@string/vermifugadoLabel"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <CheckBox
+                    android:id="@+id/castradoSim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/castradoNao"
+                    android:layout_alignBottom="@+id/castradoNao"
+                    android:layout_marginLeft="46dp"
+                    android:layout_marginStart="46dp"
+                    android:layout_toEndOf="@+id/vermifugadoLabel"
+                    android:layout_toRightOf="@+id/vermifugadoLabel"
+                    android:enabled="false"
+                    android:text="@string/radio_sim" />
+
+                <CheckBox
+                    android:id="@+id/vermifugadoSim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/castradoSim"
+                    android:layout_alignStart="@+id/castradoSim"
+                    android:layout_alignTop="@+id/vermifugadoLabel"
+                    android:enabled="false"
+                    android:text="@string/radio_sim" />
+
+                <CheckBox
+                    android:id="@+id/castradoNao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/castradoLabel"
+                    android:layout_alignBottom="@+id/castradoLabel"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="28dp"
+                    android:enabled="false"
+                    android:text="@string/radio_nao" />
+
+                <CheckBox
+                    android:id="@+id/vermifugadoNao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/castradoNao"
+                    android:layout_alignRight="@+id/castradoNao"
+                    android:layout_alignTop="@+id/vermifugadoSim"
+                    android:enabled="false"
+                    android:text="@string/radio_nao" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/infoAdicionalLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/labelAdicionais"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <EditText
+                android:id="@+id/edtInfoAdicional"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border"
+                android:enabled="false"
+                android:inputType="textMultiLine"
+                android:lines="5" />
+
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>

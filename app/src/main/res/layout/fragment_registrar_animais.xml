@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,10 +13,10 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical">
         <LinearLayout
+            android:id="@+id/fragAnimal"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent"
-            android:id="@+id/fragAnimal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <!--Put form controls here-->
             <ImageView
@@ -33,25 +32,25 @@
                 android:src="@drawable/ic_up_image" />
 
             <TextView
+                android:id="@+id/labelVermifugado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/labelVermifugado"
-                android:id="@+id/labelVermifugado" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RadioGroup
                 android:id="@+id/radiogroup_vermifugado"
-                android:layout_marginStart="32dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_marginStart="32dp">
 
                 <RadioButton
                     android:id="@+id/radiobutton_vermifugado_sim"
@@ -63,32 +62,31 @@
                     android:id="@+id/radiobutton_vermifugado_nao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="@string/radio_nao"/>
 
 
             </RadioGroup>
 
             <TextView
+                android:id="@+id/labelCastrado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/labelCastrado"
-                android:id="@+id/labelCastrado" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RadioGroup
                 android:id="@+id/radiogroup_castrado"
-                android:layout_marginStart="32dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_marginStart="32dp">
 
                 <RadioButton
                     android:id="@+id/radiobutton_castrado_sim"
@@ -100,31 +98,30 @@
                     android:id="@+id/radiobutton_castrado_nao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="@string/radio_nao"/>
 
             </RadioGroup>
 
             <TextView
+                android:id="@+id/labelGenero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/labelGenero"
-                android:id="@+id/labelGenero" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RadioGroup
                 android:id="@+id/radiogroup_genero"
-                android:layout_marginStart="32dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_marginStart="32dp">
 
                 <RadioButton
                     android:id="@+id/radiobutton_genero_fem"
@@ -136,72 +133,71 @@
                     android:id="@+id/radiobutton_genero_masc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="@string/radio_m"/>
 
             </RadioGroup>
 
             <TextView
+                android:id="@+id/labelEspecie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/labelEspecie"
-                android:id="@+id/labelEspecie" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Spinner
                 android:id="@+id/SpinnerEspecie"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:prompt="@string/spinnerEspecieLabel"
-                android:layout_width="fill_parent"
-                android:entries="@array/especies">
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
+                android:entries="@array/especies"
+                android:prompt="@string/spinnerEspecieLabel">
             </Spinner>
 
             <TextView
+                android:id="@+id/labelAdicionais"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/labelAdicionais"
-                android:id="@+id/labelAdicionais" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
                 android:id="@+id/infoAdicionais"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border"
                 android:inputType="textMultiLine"
-                android:lines="5"
-                android:layout_width="fill_parent"
-                android:background="@drawable/border">
+                android:lines="5">
             </EditText>
 
             <Button
                 android:id="@+id/btnCadastrar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/btnCadastrarLabel"/>
 
         </LinearLayout>

@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.aniharu.alertapet.Classes.ProfilePictures;
 import com.aniharu.alertapet.Classes.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
@@ -40,10 +40,9 @@ import static android.app.Activity.RESULT_OK;
 public class PerfilFragment extends Fragment {
 
     final int GALLERY = 1;
-    final int PERMISSAO_REQUEST = 2;
     final int CAMERA =3;
     User user = new User();
-    Uri downloadUrl;
+    String downloadUrl;
     ImageView mImageView ;
     int PROFILE_PIC_COUNT = 0;
 
@@ -80,7 +79,11 @@ public class PerfilFragment extends Fragment {
 
 
         //inserindo os dados na tela
-        // mImageView.setImageURI(Uri.parse(user.imageUrl));
+        Picasso.with(getContext())
+                .load(user.imageUrl)
+                .placeholder(R.drawable.placeholder)
+                .error(R.mipmap.ic_launcher)
+                .into(mImageView);
         mNome.setText(user.name);
         mDtNascimento.setText(user.dt_nascimento);
         mCelular.setText(user.telefone);
@@ -90,35 +93,37 @@ public class PerfilFragment extends Fragment {
         mBtnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mImageView.setClickable(true);
                 mNome.setEnabled(true);
                 mDtNascimento.setEnabled(true);
                 mCelular.setEnabled(true);
                 mEmail.setEnabled(true);
                 mBtnConfirmar.setVisibility(View.VISIBLE);
                 mBtnEditar.setVisibility(View.GONE);
+
+                mImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        selecionarImagem();
+                    }
+                });
             }
         });
 
         mBtnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mImageView.setClickable(false);
                 mNome.setEnabled(false);
                 mDtNascimento.setEnabled(false);
                 mCelular.setEnabled(false);
                 mEmail.setEnabled(false);
                 mBtnConfirmar.setVisibility(View.GONE);
                 mBtnEditar.setVisibility(View.VISIBLE);
+
+                mImageView.setOnClickListener(null);
             }
         });
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selecionarImagem();
-            }
-        });
+
 
     }
 
@@ -131,24 +136,23 @@ public class PerfilFragment extends Fragment {
             if (extras != null) {
                 imageBitmap = (Bitmap) extras.get("data");
                 mImageView.setImageBitmap(imageBitmap);
+                salvandoProfilePicture();
             }
         }
         else if(requestCode == GALLERY && resultCode == RESULT_OK)
         {
                 Uri imageUri= data.getData();
                 mImageView.setImageURI(imageUri);
+                salvandoProfilePicture();
         }
     }
 
     public void salvandoProfilePicture()
     {
         //referencias
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("profilePictures");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference profilePictureRef = storageRef.child("profilePicture.jpg");
-        StorageReference profileRef = storageRef.child("profile/profilePicture.jpg");
-       // profilePictureRef.getName().equals(profileRef.getName());    // true
-      //  profilePictureRef.getPath().equals(profileRef.getPath());    // false
+        StorageReference profileRef = storageRef.child("users/"+user.id+"/profilePicture.jpg");
 
         //pegando a imagem
         mImageView.setDrawingCacheEnabled(true);
@@ -159,25 +163,25 @@ public class PerfilFragment extends Fragment {
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = profileRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.i("Erro gravando db","Data could not be saved. " + exception.getMessage());
-                Toast.makeText(getContext(), "Falha em conectar com o servidor",
-                        Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                downloadUrl = taskSnapshot.getDownloadUrl();
+                if(taskSnapshot.getDownloadUrl() != null) {
+                    downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                }
+            }
+            }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Falha em conectar com o servidor",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
 
-        String profilePicturesId = mDatabase.push().getKey();
 
-        ProfilePictures profilePictures = new ProfilePictures(user.id, downloadUrl);
-        mDatabase.child(profilePicturesId).setValue(profilePictures, new DatabaseReference.CompletionListener() {
+        mDatabase.child(user.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error != null) {
                     Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
