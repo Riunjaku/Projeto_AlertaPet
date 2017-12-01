@@ -1,13 +1,21 @@
 package com.aniharu.alertapet;
 
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Region;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +42,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 
+import android.content.pm.PackageManager;
+
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +55,9 @@ public class PerfilFragment extends Fragment {
     User user = new User();
     Uri downloadUrl;
     ImageView mImageView ;
+    final int GALERIA_IMAGENS = 1;
+    final int PERMISSAO_REQUEST = 2;
+    final int TIRAR_FOTO =3;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -53,6 +68,9 @@ public class PerfilFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
+
+
+
     }
 
     @Override
@@ -72,6 +90,30 @@ public class PerfilFragment extends Fragment {
         final Button mBtnConfirmar = (Button) view.findViewById(R.id.btnConfirmar);
         final Button mBtnEditar = (Button) view.findViewById(R.id.btnEditar);
         final Button mBtnFoto = (Button) view.findViewById(R.id.btnFoto);
+        final Button mGaleria= (Button) view.findViewById(R.id.btnFotoGaleria);
+
+
+        mImageView = (ImageView)view.findViewById(R.id.imageview_default_picture);
+        Button galeria= (Button) view.findViewById(R.id.btnFotoGaleria);
+        mGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, GALERIA_IMAGENS);
+            }
+        });
+
+        Button foto = (Button) view.findViewById(R.id.btnFoto);
+        foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new
+                        Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager())!= null){
+                    startActivityForResult(takePictureIntent, TIRAR_FOTO);
+                }
+            }
+        });
 
         //inserindo os dados na tela
         // mImageView.setImageURI(Uri.parse(user.imageUrl));
@@ -92,8 +134,8 @@ public class PerfilFragment extends Fragment {
                 mEmail.setEnabled(true);
                 mBtnConfirmar.setVisibility(View.VISIBLE);
                 mBtnFoto.setVisibility(View.VISIBLE);
+                mGaleria.setVisibility(View.VISIBLE);
                 mBtnEditar.setVisibility(View.GONE);
-
 
             }
         });
@@ -109,6 +151,7 @@ public class PerfilFragment extends Fragment {
                 mEmail.setEnabled(false);
                 mBtnConfirmar.setVisibility(View.GONE);
                 mBtnFoto.setVisibility(View.GONE);
+                mGaleria.setVisibility(View.GONE);
                 mBtnEditar.setVisibility(View.VISIBLE);
 
                 //salvar imagem(Eu acho tem que testar)
@@ -176,6 +219,20 @@ public class PerfilFragment extends Fragment {
         });
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== RESULT_OK && requestCode== GALERIA_IMAGENS) {
+            Uri selectedImage = data.getData();
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+            Bitmap imagemGaleria = (BitmapFactory.decodeFile(picturePath));
+            mImageView.setImageBitmap(imagemGaleria);
+        }
+    }
 
 }
