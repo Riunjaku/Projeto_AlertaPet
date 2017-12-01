@@ -47,4 +47,8 @@
     <string name="btnCadastrarLabel">Cadastrar</string>
     <string name="btnConfirmar_label">Confirmar</string>
     <string name="btnEditar_label">Editar</string>
+    <string name="nameLabel">Nome:</string>
+    <string name="dtNascimentoLabel">Data de Nascimento:</string>
+    <string name="celularLabel">Celular</string>
+    <string name="emailLabel">Email</string>
 </resources>

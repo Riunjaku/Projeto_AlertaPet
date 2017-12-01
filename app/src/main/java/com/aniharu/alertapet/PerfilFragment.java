@@ -1,21 +1,14 @@
 package com.aniharu.alertapet;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Region;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.aniharu.alertapet.Classes.ProfilePictures;
@@ -40,9 +30,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.net.URI;
-
-import android.content.pm.PackageManager;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,12 +39,13 @@ import static android.app.Activity.RESULT_OK;
  */
 public class PerfilFragment extends Fragment {
 
+    final int GALLERY = 1;
+    final int PERMISSAO_REQUEST = 2;
+    final int CAMERA =3;
     User user = new User();
     Uri downloadUrl;
     ImageView mImageView ;
-    final int GALERIA_IMAGENS = 1;
-    final int PERMISSAO_REQUEST = 2;
-    final int TIRAR_FOTO =3;
+    int PROFILE_PIC_COUNT = 0;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -82,38 +70,14 @@ public class PerfilFragment extends Fragment {
             user = (User) bundle.get("userLogged");
         }
 
-        mImageView = (ImageView)view.findViewById(R.id.imageview_default_picture);
-        final EditText mNome = (EditText) view.findViewById(R.id.editNome);
-        final EditText mDtNascimento = (EditText) view.findViewById(R.id.editDataNascimento);
-        final EditText mCelular = (EditText) view.findViewById(R.id.editCelular);
-        final EditText mEmail = (EditText) view.findViewById(R.id.editEmail);
-        final Button mBtnConfirmar = (Button) view.findViewById(R.id.btnConfirmar);
-        final Button mBtnEditar = (Button) view.findViewById(R.id.btnEditar);
-        final Button mBtnFoto = (Button) view.findViewById(R.id.btnFoto);
-        final Button mGaleria= (Button) view.findViewById(R.id.btnFotoGaleria);
+        mImageView = view.findViewById(R.id.imageview_default_picture);
+        final EditText mNome = view.findViewById(R.id.editNome);
+        final EditText mDtNascimento = view.findViewById(R.id.editDataNascimento);
+        final EditText mCelular = view.findViewById(R.id.editCelular);
+        final EditText mEmail = view.findViewById(R.id.editEmail);
+        final Button mBtnConfirmar = view.findViewById(R.id.btnConfirmar);
+        final Button mBtnEditar = view.findViewById(R.id.btnEditar);
 
-
-        mImageView = (ImageView)view.findViewById(R.id.imageview_default_picture);
-        Button galeria= (Button) view.findViewById(R.id.btnFotoGaleria);
-        mGaleria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, GALERIA_IMAGENS);
-            }
-        });
-
-        Button foto = (Button) view.findViewById(R.id.btnFoto);
-        foto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent takePictureIntent = new
-                        Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager())!= null){
-                    startActivityForResult(takePictureIntent, TIRAR_FOTO);
-                }
-            }
-        });
 
         //inserindo os dados na tela
         // mImageView.setImageURI(Uri.parse(user.imageUrl));
@@ -126,47 +90,54 @@ public class PerfilFragment extends Fragment {
         mBtnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mImageView.setClickable(true);
                 mNome.setEnabled(true);
                 mDtNascimento.setEnabled(true);
                 mCelular.setEnabled(true);
                 mEmail.setEnabled(true);
                 mBtnConfirmar.setVisibility(View.VISIBLE);
-                mBtnFoto.setVisibility(View.VISIBLE);
-                mGaleria.setVisibility(View.VISIBLE);
                 mBtnEditar.setVisibility(View.GONE);
-
             }
         });
 
         mBtnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mImageView.setClickable(false);
                 mNome.setEnabled(false);
                 mDtNascimento.setEnabled(false);
                 mCelular.setEnabled(false);
                 mEmail.setEnabled(false);
                 mBtnConfirmar.setVisibility(View.GONE);
-                mBtnFoto.setVisibility(View.GONE);
-                mGaleria.setVisibility(View.GONE);
                 mBtnEditar.setVisibility(View.VISIBLE);
-
-                //salvar imagem(Eu acho tem que testar)
-               // salvandoProfilePicture();
-
             }
         });
 
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                selecionarImagem();
             }
         });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap;
+            if (extras != null) {
+                imageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(imageBitmap);
+            }
+        }
+        else if(requestCode == GALLERY && resultCode == RESULT_OK)
+        {
+                Uri imageUri= data.getData();
+                mImageView.setImageURI(imageUri);
+        }
     }
 
     public void salvandoProfilePicture()
@@ -176,8 +147,8 @@ public class PerfilFragment extends Fragment {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference profilePictureRef = storageRef.child("profilePicture.jpg");
         StorageReference profileRef = storageRef.child("profile/profilePicture.jpg");
-        profilePictureRef.getName().equals(profileRef.getName());    // true
-        profilePictureRef.getPath().equals(profileRef.getPath());    // false
+       // profilePictureRef.getName().equals(profileRef.getName());    // true
+      //  profilePictureRef.getPath().equals(profileRef.getPath());    // false
 
         //pegando a imagem
         mImageView.setDrawingCacheEnabled(true);
@@ -219,20 +190,38 @@ public class PerfilFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode== RESULT_OK && requestCode== GALERIA_IMAGENS) {
-            Uri selectedImage = data.getData();
-            String[] filePath = {MediaStore.Images.Media.DATA};
-            Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
-            c.moveToFirst();
-            int columnIndex = c.getColumnIndex(filePath[0]);
-            String picturePath = c.getString(columnIndex);
-            c.close();
-            Bitmap imagemGaleria = (BitmapFactory.decodeFile(picturePath));
-            mImageView.setImageBitmap(imagemGaleria);
-        }
-    }
+    public void selecionarImagem()
+    {
 
+        final CharSequence[] items = {"Tirar foto", "Escolher da galeria", "Cancelar"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+        builder.setTitle("Adicionar foto!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Tirar foto")) {
+                    PROFILE_PIC_COUNT = 1;
+                    Intent takePictureIntent = new
+                            Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager())!= null){
+                        startActivityForResult(takePictureIntent, CAMERA);
+                    }
+                } else if (items[item].equals("Escolher da galeria")) {
+                    PROFILE_PIC_COUNT = 1;
+                    Intent galleryPictureIntent = new
+                            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    galleryPictureIntent.setType("image/*");
+                    galleryPictureIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    if(galleryPictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(galleryPictureIntent, GALLERY);
+                    }
+                } else if (items[item].equals("Cancelar")) {
+                    PROFILE_PIC_COUNT = 0;
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
 }
