@@ -3,7 +3,7 @@ package com.aniharu.alertapet.Classes;
 
 public class Marcadores {
 
-    public String imagem, descricao;
+    public String imagemUrl, descricao;
     public double Lat, Lng;
 
     public double getLat() {
@@ -23,11 +23,11 @@ public class Marcadores {
     }
 
     public String getImagem() {
-        return imagem;
+        return imagemUrl;
     }
 
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 
     public String getDescricao() {

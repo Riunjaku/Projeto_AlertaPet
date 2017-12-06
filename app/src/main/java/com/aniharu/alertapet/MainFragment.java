@@ -26,6 +26,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 
 public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -36,13 +42,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         View.OnClickListener
 {
 
+        private static final String TAG = "fudeu";
         //Variaveis globais
         GoogleMap mGoogleMap;
         MapView mMapView;
         GoogleApiClient mGoogleApiClient;
-        private static final String TAG = "fudeu";
         SupportMapFragment mapFragment;
-
+        Marcadores marcadores;
+        Marcadores[] x = {};
 
         public MainFragment() {
 
@@ -151,15 +158,49 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
             //Marcador de teste
             //Receber o JSON do firebase com todos os marcadores, transformar num array de marcadores
             //e colocar o array no lugar do X
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            //Query select * from users where email = vEmail
+            Query query = mDatabase.child("markers");
+
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                        marcadores = messageSnapshot.getValue(Marcadores.class);
+                    }
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             Marcadores marcadores = new Marcadores();
             marcadores.setDescricao("teste dos cxx");
-            marcadores.setImagem("http://placehold.it/120x120&text=image1");
+            marcadores.setImagemUrl("http://placehold.it/120x120&text=image1");
             marcadores.setLat(-22.87396);
             marcadores.setLng(-43.4313797);
 
             Marcadores marcadores2 = new Marcadores();
             marcadores2.setDescricao("teste dos marcadores");
-            marcadores2.setImagem("http://placehold.it/120x120&text=image4");
+            marcadores2.setImagemUrl("http://placehold.it/120x120&text=image4");
             marcadores2.setLat(-22.873994);
             marcadores2.setLng(-43.4632977);
 
@@ -177,7 +218,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
                 markerOpt.position(new LatLng(marker.getLat(), marker.getLng()))
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker))
                         .snippet(marker.descricao)
-                        .title(marker.imagem);
+                        .title(marker.imagemUrl);
 
                 mGoogleMap.addMarker(markerOpt);
 

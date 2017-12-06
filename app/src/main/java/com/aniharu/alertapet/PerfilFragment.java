@@ -79,11 +79,21 @@ public class PerfilFragment extends Fragment {
 
 
         //inserindo os dados na tela
-        Picasso.with(getContext())
-                .load(user.imageUrl)
-                .placeholder(R.drawable.placeholder)
-                .error(R.mipmap.ic_launcher)
-                .into(mImageView);
+        if(user.imageUrl.equals(""))
+        {
+            Picasso.with(getContext())
+                    .load(R.drawable.placeholder_imageprofile)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.mipmap.ic_launcher)
+                    .into(mImageView);
+        }
+        else {
+            Picasso.with(getContext())
+                    .load(user.imageUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.mipmap.ic_launcher)
+                    .into(mImageView);
+        }
         mNome.setText(user.name);
         mDtNascimento.setText(user.dt_nascimento);
         mCelular.setText(user.telefone);
