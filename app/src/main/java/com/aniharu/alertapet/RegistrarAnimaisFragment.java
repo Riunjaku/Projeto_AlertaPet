@@ -52,7 +52,7 @@ public class RegistrarAnimaisFragment extends Fragment {
     String valorInfoAdicional;
     int PROFILE_PIC_COUNT = 0;
     ImageView mImageView;
-    String downloadUrl;
+    String downloadUrl = "";
     Animal animal;
 
     public RegistrarAnimaisFragment() {
@@ -241,7 +241,7 @@ public class RegistrarAnimaisFragment extends Fragment {
     public void salvandoProfilePicture()
     {
         //referencias
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference profileRef = storageRef.child("pets/"+animal.id+"/petPicture.jpg");
 
@@ -260,6 +260,20 @@ public class RegistrarAnimaisFragment extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 if(taskSnapshot.getDownloadUrl() != null) {
                     downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                    if(!downloadUrl.equals(""))
+                    {
+                        mDatabase.child(animal.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
+                            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                                if (error != null) {
+                                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                                } else {
+                                    Log.i("sucesso","Data saved successfully. ");
+                                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -272,17 +286,7 @@ public class RegistrarAnimaisFragment extends Fragment {
 
 
 
-        mDatabase.child(animal.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
-            public void onComplete(DatabaseError error, DatabaseReference ref) {
-                if (error != null) {
-                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
-                } else {
-                    Log.i("sucesso","Data saved successfully. ");
-                    Toast.makeText(getContext(), "Cadastrado com sucesso",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+
     }
 
 }

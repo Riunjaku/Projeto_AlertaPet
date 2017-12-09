@@ -129,7 +129,14 @@ public class PerfilFragment extends Fragment {
                 mBtnConfirmar.setVisibility(View.GONE);
                 mBtnEditar.setVisibility(View.VISIBLE);
 
+                user.name = mNome.getText().toString();
+                user.dt_nascimento = mDtNascimento.getText().toString();
+                user.telefone = mCelular.getText().toString();
+                user.email = mEmail.getText().toString();
+
                 mImageView.setOnClickListener(null);
+
+                atualizarPerfil();
             }
         });
 
@@ -160,7 +167,7 @@ public class PerfilFragment extends Fragment {
     public void salvandoProfilePicture()
     {
         //referencias
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference profileRef = storageRef.child("users/"+user.id+"/profilePicture.jpg");
 
@@ -179,6 +186,20 @@ public class PerfilFragment extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 if(taskSnapshot.getDownloadUrl() != null) {
                     downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                    if(!downloadUrl.equals("") || downloadUrl == null)
+                    {
+                        mDatabase.child(user.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
+                            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                                if (error != null) {
+                                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                                } else {
+                                    Log.i("sucesso","Data saved successfully. ");
+                                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
                 }
             }
             }).addOnFailureListener(new OnFailureListener() {
@@ -191,17 +212,7 @@ public class PerfilFragment extends Fragment {
 
 
 
-        mDatabase.child(user.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
-            public void onComplete(DatabaseError error, DatabaseReference ref) {
-                if (error != null) {
-                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
-                } else {
-                    Log.i("sucesso","Data saved successfully. ");
-                    Toast.makeText(getContext(), "Cadastrado com sucesso",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+
     }
 
     public void selecionarImagem()
@@ -238,4 +249,60 @@ public class PerfilFragment extends Fragment {
         });
         builder.show();
     }
+
+    public void atualizarPerfil()
+    {
+        //referencias
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        mDatabase.child(user.id).child("name").setValue(user.name, new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error != null) {
+                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                } else {
+                    Log.i("sucesso","Data saved successfully. ");
+                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        mDatabase.child(user.id).child("dt_nascimento").setValue(user.dt_nascimento, new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error != null) {
+                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                } else {
+                    Log.i("sucesso","Data saved successfully. ");
+                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        mDatabase.child(user.id).child("email").setValue(user.email, new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error != null) {
+                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                } else {
+                    Log.i("sucesso","Data saved successfully. ");
+                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        mDatabase.child(user.id).child("telefone").setValue(user.telefone, new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error != null) {
+                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                } else {
+                    Log.i("sucesso","Data saved successfully. ");
+                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
 }

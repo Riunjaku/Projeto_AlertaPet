@@ -54,4 +54,5 @@
     <string name="generoLabel">Genero</string>
     <string name="vermifugadoLabel">Vermifugado</string>
     <string name="castradoLabel">Castrado</string>
+    <string name="ImageViewDescription">imagem do animal</string>
 </resources>
