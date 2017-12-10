@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.aniharu.alertapet.Classes.Animal;
+import com.aniharu.alertapet.Classes.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
@@ -54,6 +56,7 @@ public class RegistrarAnimaisFragment extends Fragment {
     ImageView mImageView;
     String downloadUrl = "";
     Animal animal;
+    User user;
 
     public RegistrarAnimaisFragment() {
         // Required empty public constructor
@@ -70,6 +73,10 @@ public class RegistrarAnimaisFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            user = (User) bundle.get("userLogged");
+        }
 
         mImageView = view.findViewById(R.id.imageview_default_picture);
         final Spinner mSpinner = view.findViewById(R.id.SpinnerEspecie);
@@ -89,6 +96,13 @@ public class RegistrarAnimaisFragment extends Fragment {
         final RadioGroup mRadioGroup_genero = view.findViewById(R.id.radiogroup_genero);
         final RadioButton mRadioButtonGeneroF = view.findViewById(R.id.radiobutton_genero_fem);
         final RadioButton mRadioButtonGeneroM = view.findViewById(R.id.radiobutton_genero_masc);
+
+        Picasso.with(getContext())
+                .load(R.drawable.placeholder_image)
+                .placeholder(R.drawable.placeholder)
+                .error(R.mipmap.ic_launcher)
+                .fit()
+                .into(mImageView);
 
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,41 +147,47 @@ public class RegistrarAnimaisFragment extends Fragment {
                 especieSelecionado = mSpinner.getSelectedItem().toString();
                 valorInfoAdicional = mInfoAdicional.getText().toString();
 
-                if(valorVermifugado == null || valorCastrado == null || valorGenero == null) {
+                if(valorVermifugado == null || valorCastrado == null || valorGenero == null || valorInfoAdicional.equals("")) {
                     Toast.makeText(getContext(), "Preencha todos os campos",
                             Toast.LENGTH_LONG).show();
                 }
                 else
                 {
-                //salvar o resultado desse metodo no banco de dados e abrir o preview desse animal
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
-                final String petId = mDatabase.push().getKey();
+                    if(!downloadUrl.equals(""))
+                    {
+                        //salvar o resultado desse metodo no banco de dados e abrir o preview desse animal
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
+                        final String petId = mDatabase.push().getKey();
 
-                // criando um objeto de animal para salvar no banco
-                animal = new Animal(petId,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado, downloadUrl);
-                // salvando o animal no nó ‘pets’ usando o id do usuário
-                mDatabase.child(petId).setValue(animal, new DatabaseReference.CompletionListener() {
-                    public void onComplete(DatabaseError error, DatabaseReference ref) {
-                        if (error != null) {
-                            Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
-                            Toast.makeText(getContext(),
-                                    "Um erro inesperado ocorreu, por favor tente novamente, ou entre em contato com o suporte",
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-                            Log.i("sucesso","Data saved successfully. ");
-                            Toast.makeText(getContext(), "Cadastrado com sucesso",
-                                    Toast.LENGTH_LONG).show();
-                            salvandoProfilePicture();
-                            previewAnimal(petId);
+                        // criando um objeto de animal para salvar no banco
+                        animal = new Animal(petId,user.id,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado, downloadUrl);
+                        // salvando o animal no nó ‘pets’ usando o id do usuário
+                        mDatabase.child(petId).setValue(animal, new DatabaseReference.CompletionListener() {
+                            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                                if (error != null) {
+                                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                                    Toast.makeText(getContext(),
+                                            "Um erro inesperado ocorreu, por favor tente novamente, ou entre em contato com o suporte",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Log.i("sucesso","Data saved successfully. ");
+                                    Toast.makeText(getContext(), "Cadastrado com sucesso",
+                                            Toast.LENGTH_LONG).show();
+                                    salvandoProfilePicture();
+                                    previewAnimal(petId);
 
-                        }
+                                }
+                            }
+                        });
                     }
-                });
+                    else
+                    {
+                        Toast.makeText(getContext(), "Coloque uma imagem",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
-
             }
         });
-
         mRadiogroup_vermifugado.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override

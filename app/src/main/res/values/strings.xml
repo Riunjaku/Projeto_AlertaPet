@@ -55,4 +55,15 @@
     <string name="vermifugadoLabel">Vermifugado</string>
     <string name="castradoLabel">Castrado</string>
     <string name="ImageViewDescription">imagem do animal</string>
+    <string name="NameNotFound">Nome não encontrado</string>
+    <string name="OnDevelopment">Em Construção</string>
+
+    <!--nav Labels-->
+    <string name="PerfilLabel">Perfil</string>
+    <string name="AdocaoLabel">Adoção</string>
+    <string name="ListaLabel">Lista de Animais</string>
+    <string name="RegistrarLabel">Registrar Animais</string>
+    <string name="BatePapoLabel">Bate Papo</string>
+    <string name="ConfigLabel">Configurações</string>
+    <string name="DeslogarLabel">Deslogar</string>
 </resources>

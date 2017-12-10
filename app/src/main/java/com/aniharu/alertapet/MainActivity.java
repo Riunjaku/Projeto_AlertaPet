@@ -10,8 +10,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.aniharu.alertapet.Classes.User;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.aniharu.alertapet.R.string.NameNotFound;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -28,12 +35,13 @@ public class MainActivity extends AppCompatActivity
         //Pega o usuario
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        user = (User) bundle.get("userLogged");
+        if(bundle != null) {
+            user = (User) bundle.get("userLogged");
+            bundle.putSerializable("userLogged",user);
+        }
 
-        //Coloca o fragmento inicial
         PerfilFragment fragment = new PerfilFragment();
         //Coloca o usuario logado no perfil
-        bundle.putSerializable("userLogged",user);
         fragment.setArguments(bundle);
 
         android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -42,17 +50,52 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        View hView =  navigationView.getHeaderView(0);
+        TextView mTextView = hView.findViewById(R.id.username);
+        CircleImageView mImageView = hView.findViewById(R.id.profile_image);
+
+        if(!user.name.equals("") || user.name == null)
+        {
+            mTextView.setText(user.name);
+        }
+        else
+        {
+            mTextView.setText(NameNotFound);
+        }
+
+        if(!user.imageUrl.equals("") || user.imageUrl == null)
+        {
+            Picasso.with(getApplicationContext())
+                    .load(user.imageUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.mipmap.ic_launcher)
+                    .fit()
+                    .centerCrop()
+                    .into(mImageView);
+        }
+        else
+        {
+            Picasso.with(getApplicationContext())
+                    .load(R.drawable.placeholder_no_image)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.mipmap.ic_launcher)
+                    .fit()
+                    .centerCrop()
+                    .into(mImageView);
+        }
     }
 
     //Verifica o item selecionado no menu e realiza e chama o fragmento correspondente
@@ -71,8 +114,10 @@ public class MainActivity extends AppCompatActivity
             //Passando usuario
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            user = (User) bundle.get("userLogged");
-            bundle.putSerializable("userLogged",user);
+            if(bundle != null) {
+                user = (User) bundle.get("userLogged");
+                bundle.putSerializable("userLogged", user);
+            }
             fragment.setArguments(bundle);
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -81,15 +126,17 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
 
-        } else if (id == R.id.nav_map) {
+        } else if (id == R.id.nav_adocao) {
 
             MainFragment fragment = new MainFragment();
 
             //Passando usuario
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            user = (User) bundle.get("userLogged");
-            bundle.putSerializable("userLogged",user);
+            if(bundle != null) {
+                user = (User) bundle.get("userLogged");
+                bundle.putSerializable("userLogged", user);
+            }
             fragment.setArguments(bundle);
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -104,8 +151,10 @@ public class MainActivity extends AppCompatActivity
             //Passando usuario
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            user = (User) bundle.get("userLogged");
-            bundle.putSerializable("userLogged",user);
+            if(bundle != null) {
+                user = (User) bundle.get("userLogged");
+                bundle.putSerializable("userLogged", user);
+            }
             fragment.setArguments(bundle);
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -120,8 +169,10 @@ public class MainActivity extends AppCompatActivity
             //Passando usuario
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            user = (User) bundle.get("userLogged");
-            bundle.putSerializable("userLogged",user);
+            if(bundle != null) {
+                user = (User) bundle.get("userLogged");
+                bundle.putSerializable("userLogged", user);
+            }
             fragment.setArguments(bundle);
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -136,8 +187,10 @@ public class MainActivity extends AppCompatActivity
             //Passando usuario
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            user = (User) bundle.get("userLogged");
-            bundle.putSerializable("userLogged",user);
+            if(bundle != null) {
+                user = (User) bundle.get("userLogged");
+                bundle.putSerializable("userLogged", user);
+            }
             fragment.setArguments(bundle);
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -152,8 +205,10 @@ public class MainActivity extends AppCompatActivity
             //Passando usuario
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
-            user = (User) bundle.get("userLogged");
-            bundle.putSerializable("userLogged",user);
+            if(bundle != null) {
+                user = (User) bundle.get("userLogged");
+                bundle.putSerializable("userLogged", user);
+            }
             fragment.setArguments(bundle);
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -165,7 +220,7 @@ public class MainActivity extends AppCompatActivity
             this.finish();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

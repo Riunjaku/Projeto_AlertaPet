@@ -81,6 +81,8 @@ public class PreviewAnimalFragment extends Fragment {
                                         .load(animal.imageUrl)
                                         .placeholder(R.drawable.placeholder)
                                         .error(R.mipmap.ic_launcher)
+                                        .fit()
+                                        .centerCrop()
                                         .into(mImageView);
                                 mGenero.setText(animal.genero);
                                 mEspecie.setText(animal.especie);

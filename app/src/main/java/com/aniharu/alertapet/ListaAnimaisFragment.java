@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.aniharu.alertapet.Classes.Animal;
+import com.aniharu.alertapet.Classes.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  */
 public class ListaAnimaisFragment extends Fragment {
 
+    User user = new User();
     private ListView lstAnimal;
     private ArrayList<Animal> AnimaisList = new ArrayList<>();
 
@@ -43,6 +45,11 @@ public class ListaAnimaisFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            user = (User) bundle.get("userLogged");
+        }
+
         lstAnimal =  view.findViewById(R.id.animalListView);
 
     }
@@ -59,7 +66,7 @@ public class ListaAnimaisFragment extends Fragment {
     {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Query query = mDatabase.child("pets");
+        Query query = mDatabase.child("pets").orderByChild("userId").equalTo(user.id);
 
             query.addChildEventListener(new ChildEventListener() {
                 @Override

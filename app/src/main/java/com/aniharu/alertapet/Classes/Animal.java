@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 public class Animal implements Serializable {
 
-    public String id, infoAdicional, especie, genero, castrado, vermifugado, imageUrl;
+    public String id, userId, infoAdicional, especie, genero, castrado, vermifugado, imageUrl;
 
     public Animal() {
     }
 
-    public Animal(String id, String infoAdicional, String especie, String genero, String castrado, String vermifugado, String imageUrl) {
+    public Animal(String id, String userId, String infoAdicional, String especie, String genero, String castrado, String vermifugado, String imageUrl) {
         this.id = id;
+        this.userId = userId;
         this.infoAdicional = infoAdicional;
         this.especie = especie;
         this.genero = genero;

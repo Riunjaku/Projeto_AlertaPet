@@ -85,6 +85,8 @@ public class PerfilFragment extends Fragment {
                     .load(R.drawable.placeholder_imageprofile)
                     .placeholder(R.drawable.placeholder)
                     .error(R.mipmap.ic_launcher)
+                    .fit()
+                    .centerCrop()
                     .into(mImageView);
         }
         else {
@@ -92,6 +94,8 @@ public class PerfilFragment extends Fragment {
                     .load(user.imageUrl)
                     .placeholder(R.drawable.placeholder)
                     .error(R.mipmap.ic_launcher)
+                    .fit()
+                    .centerCrop()
                     .into(mImageView);
         }
         mNome.setText(user.name);
