@@ -29,7 +29,7 @@
                 android:contentDescription="@string/contentImageDescription"
                 android:padding="32dp"
                 android:scaleType="centerCrop"
-                android:src="" />
+                />
 
         </LinearLayout>
 

@@ -153,8 +153,6 @@ public class RegistrarAnimaisFragment extends Fragment {
                 }
                 else
                 {
-                    if(!downloadUrl.equals(""))
-                    {
                         //salvar o resultado desse metodo no banco de dados e abrir o preview desse animal
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
                         final String petId = mDatabase.push().getKey();
@@ -179,12 +177,6 @@ public class RegistrarAnimaisFragment extends Fragment {
                                 }
                             }
                         });
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(), "Coloque uma imagem",
-                                Toast.LENGTH_LONG).show();
-                    }
                 }
             }
         });

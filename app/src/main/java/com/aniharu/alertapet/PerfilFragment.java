@@ -21,9 +21,12 @@ import android.widget.Toast;
 import com.aniharu.alertapet.Classes.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -141,6 +144,9 @@ public class PerfilFragment extends Fragment {
                 mImageView.setOnClickListener(null);
 
                 atualizarPerfil();
+
+                Toast.makeText(getContext(), "Necessario relogar para completa atualização do perfil.",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -197,6 +203,7 @@ public class PerfilFragment extends Fragment {
                                 if (error != null) {
                                     Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
                                 } else {
+                                    user.imageUrl = downloadUrl;
                                     Log.i("sucesso","Data saved successfully. ");
                                     Toast.makeText(getContext(), "Cadastrado com sucesso",
                                             Toast.LENGTH_LONG).show();
@@ -305,6 +312,26 @@ public class PerfilFragment extends Fragment {
                             Toast.LENGTH_LONG).show();
                 }
             }
+        });
+
+        Query query = mDatabase.child("users").orderByChild("id").equalTo(user.id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //Pega o resultado da query em um array
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    user = messageSnapshot.getValue(User.class);
+                }
+                Intent intent = getActivity().getIntent();
+                intent.putExtra("userLogged",user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i("Erro na query", "Query login erro" + databaseError.getMessage());
+            }
+
         });
 
     }

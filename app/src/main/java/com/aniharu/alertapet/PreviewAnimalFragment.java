@@ -77,13 +77,25 @@ public class PreviewAnimalFragment extends Fragment {
 
                                 animal = dataSnapshot.getValue(Animal.class);
 
-                                Picasso.with(getContext())
-                                        .load(animal.imageUrl)
-                                        .placeholder(R.drawable.placeholder)
-                                        .error(R.mipmap.ic_launcher)
-                                        .fit()
-                                        .centerCrop()
-                                        .into(mImageView);
+                                if(!animal.imageUrl.equals("") || animal == null) {
+                                    Picasso.with(getContext())
+                                            .load(animal.imageUrl)
+                                            .placeholder(R.drawable.placeholder)
+                                            .error(R.mipmap.ic_launcher)
+                                            .fit()
+                                            .centerCrop()
+                                            .into(mImageView);
+                                }
+                                else
+                                {
+                                    Picasso.with(getContext())
+                                            .load(R.drawable.placeholder_no_image)
+                                            .placeholder(R.drawable.placeholder)
+                                            .error(R.mipmap.ic_launcher)
+                                            .fit()
+                                            .centerCrop()
+                                            .into(mImageView);
+                                }
                                 mGenero.setText(animal.genero);
                                 mEspecie.setText(animal.especie);
                                 mInfoAdicional.setText(animal.infoAdicional);
