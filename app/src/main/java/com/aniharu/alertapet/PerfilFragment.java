@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aniharu.alertapet.Classes.User;
@@ -34,6 +36,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -48,6 +52,8 @@ public class PerfilFragment extends Fragment {
     String downloadUrl;
     ImageView mImageView ;
     int PROFILE_PIC_COUNT = 0;
+    NavigationView navigationView = null;
+    View hView =  navigationView.getHeaderView(0);
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -79,7 +85,7 @@ public class PerfilFragment extends Fragment {
         final EditText mEmail = view.findViewById(R.id.editEmail);
         final Button mBtnConfirmar = view.findViewById(R.id.btnConfirmar);
         final Button mBtnEditar = view.findViewById(R.id.btnEditar);
-
+        navigationView = view.findViewById(R.id.nav_view);
 
         //inserindo os dados na tela
         if(user.imageUrl.equals(""))
@@ -204,6 +210,8 @@ public class PerfilFragment extends Fragment {
                                     Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
                                 } else {
                                     user.imageUrl = downloadUrl;
+                                    CircleImageView mImageView = hView.findViewById(R.id.profile_image);
+                                    mImageView.setImageURI(Uri.parse(downloadUrl));
                                     Log.i("sucesso","Data saved successfully. ");
                                     Toast.makeText(getContext(), "Cadastrado com sucesso",
                                             Toast.LENGTH_LONG).show();
@@ -266,14 +274,15 @@ public class PerfilFragment extends Fragment {
         //referencias
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
+        final TextView mTextView = hView.findViewById(R.id.username);
+
         mDatabase.child(user.id).child("name").setValue(user.name, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error != null) {
                     Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
                 } else {
                     Log.i("sucesso","Data saved successfully. ");
-                    Toast.makeText(getContext(), "Cadastrado com sucesso",
-                            Toast.LENGTH_LONG).show();
+                    mTextView.setText(user.name);
                 }
             }
         });

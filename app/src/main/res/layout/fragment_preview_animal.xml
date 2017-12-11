@@ -95,8 +95,8 @@
                     android:id="@+id/castradoSim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="54dp"
-                    android:layout_marginStart="54dp"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginStart="44dp"
                     android:enabled="false"
                     android:text="@string/radio_sim" />
 
@@ -104,8 +104,8 @@
                     android:id="@+id/castradoNao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:enabled="false"
                     android:text="@string/radio_nao" />
 
@@ -131,8 +131,8 @@
                     android:id="@+id/vermifugadoSim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:enabled="false"
                     android:text="@string/radio_sim" />
 
@@ -142,15 +142,15 @@
                     android:id="@+id/vermifugadoNao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:enabled="false"
                     android:text="@string/radio_nao" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
@@ -159,8 +159,8 @@
                     android:id="@+id/infoAdicionalLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/labelAdicionais"
                     android:textAlignment="center"
@@ -168,7 +168,7 @@
 
                 <EditText
                     android:id="@+id/edtInfoAdicional"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
                     android:layout_marginStart="50dp"

@@ -153,30 +153,7 @@ public class RegistrarAnimaisFragment extends Fragment {
                 }
                 else
                 {
-                        //salvar o resultado desse metodo no banco de dados e abrir o preview desse animal
-                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
-                        final String petId = mDatabase.push().getKey();
-
-                        // criando um objeto de animal para salvar no banco
-                        animal = new Animal(petId,user.id,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado, downloadUrl);
-                        // salvando o animal no nó ‘pets’ usando o id do usuário
-                        mDatabase.child(petId).setValue(animal, new DatabaseReference.CompletionListener() {
-                            public void onComplete(DatabaseError error, DatabaseReference ref) {
-                                if (error != null) {
-                                    Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
-                                    Toast.makeText(getContext(),
-                                            "Um erro inesperado ocorreu, por favor tente novamente, ou entre em contato com o suporte",
-                                            Toast.LENGTH_LONG).show();
-                                } else {
-                                    Log.i("sucesso","Data saved successfully. ");
-                                    Toast.makeText(getContext(), "Cadastrado com sucesso",
-                                            Toast.LENGTH_LONG).show();
-                                    salvandoProfilePicture();
-                                    previewAnimal(petId);
-
-                                }
-                            }
-                        });
+                    salvandoProfilePicture();
                 }
             }
         });
@@ -255,7 +232,8 @@ public class RegistrarAnimaisFragment extends Fragment {
         //referencias
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pets");
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageRef.child("pets/"+animal.id+"/petPicture.jpg");
+        final String petId = mDatabase.push().getKey();
+        StorageReference profileRef = storageRef.child("pets/"+petId+"/petPicture.jpg");
 
         //pegando a imagem
         mImageView.setDrawingCacheEnabled(true);
@@ -274,11 +252,30 @@ public class RegistrarAnimaisFragment extends Fragment {
                     downloadUrl = taskSnapshot.getDownloadUrl().toString();
                     if(!downloadUrl.equals(""))
                     {
-                        mDatabase.child(animal.id).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
+                        mDatabase.child(petId).child("imageUrl").setValue(downloadUrl, new DatabaseReference.CompletionListener() {
                             public void onComplete(DatabaseError error, DatabaseReference ref) {
                                 if (error != null) {
                                     Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
                                 } else {
+                                    // criando um objeto de animal para salvar no banco
+                                    animal = new Animal(petId,user.id,valorInfoAdicional, especieSelecionado, valorGenero, valorCastrado, valorVermifugado, downloadUrl);
+                                    // salvando o animal no nó ‘pets’ usando o id do usuário
+                                    mDatabase.child(petId).setValue(animal, new DatabaseReference.CompletionListener() {
+                                        public void onComplete(DatabaseError error, DatabaseReference ref) {
+                                            if (error != null) {
+                                                Log.i("Erro gravando db","Data could not be saved. " + error.getMessage());
+                                                Toast.makeText(getContext(),
+                                                        "Um erro inesperado ocorreu, por favor tente novamente, ou entre em contato com o suporte",
+                                                        Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Log.i("sucesso","Data saved successfully. ");
+                                                Toast.makeText(getContext(), "Cadastrado com sucesso",
+                                                        Toast.LENGTH_LONG).show();
+                                                previewAnimal(petId);
+
+                                            }
+                                        }
+                                    });
                                     Log.i("sucesso","Data saved successfully. ");
                                     Toast.makeText(getContext(), "Cadastrado com sucesso",
                                             Toast.LENGTH_LONG).show();
